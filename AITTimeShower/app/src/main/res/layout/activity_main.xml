@@ -31,13 +31,11 @@
     </androidx.cardview.widget.CardView>
 
 
+
+
     <EditText
-        android:id="@+id/etNumA"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-    <EditText
-        android:id="@+id/etNumB"
+        android:id="@+id/etUser"
+        android:hint="Enter your username here"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
@@ -46,6 +44,6 @@
         android:id="@+id/btnTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show time"/>
+        android:text="@string/button_show"/>
 
 </LinearLayout>

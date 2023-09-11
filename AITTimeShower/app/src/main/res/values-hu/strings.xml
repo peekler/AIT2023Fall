@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">AITTimeShower</string>
-    <string name="button_show">Show time</string>
-
+    <string name="button_show">Mutasd az időt</string>
     <string name="hello_the_time_is">Hello the time is: %1$s</string>
-
-
 </resources>
