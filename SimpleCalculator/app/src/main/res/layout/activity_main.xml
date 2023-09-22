@@ -7,36 +7,38 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_hello" />
-
-    <LinearLayout
+    <EditText
+        android:id="@+id/etNumA"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:hint="Enter num A here"
+        android:inputType="number"
+        android:text="" />
 
-        <hu.ait.tictactoe.view.TicTacToeView
-            android:id="@+id/ticTacToe"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvData"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/etNumB"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Next player is O"
-        android:textSize="28sp"/>
-
+        android:hint="Enter num B here"
+        android:inputType="number"
+        android:text="" />
 
     <Button
-        android:id="@+id/btnReset"
+        android:id="@+id/btnPlus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reset" />
+        android:text="Plus" />
+
+    <Button
+        android:id="@+id/btnMinus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Minus" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp" />
 
 </LinearLayout>

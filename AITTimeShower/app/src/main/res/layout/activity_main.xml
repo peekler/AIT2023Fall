@@ -35,7 +35,7 @@
 
     <EditText
         android:id="@+id/etUser"
-        android:hint="Enter your username here"
+        android:hint="@string/text_enter_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

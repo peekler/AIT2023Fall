@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SimpleCalculator</string>
+    <string name="hint_num_a">Enter num A here</string>
+</resources>

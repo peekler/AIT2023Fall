@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
-            //Toast.makeText(this,
-            //    "Hello ${binding.etUser.text.toString()}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this,
+                "Hello ${binding.etUser.text.toString()}", Toast.LENGTH_LONG).show()
 
             Snackbar.make(binding.root, "Hello ${binding.etUser.text.toString()}",
                 Snackbar.LENGTH_LONG).setAction("Undo", {

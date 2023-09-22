@@ -8,13 +8,13 @@ import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import hu.ait.tictactoe.MainActivity
+import hu.ait.tictactoe.model.TicTacToeModel
 
 class TicTacToeView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     private val paintBackground = Paint()
     private val paintLine = Paint()
-
-    private var circles = mutableListOf<PointF>()
 
     init {
         paintBackground.color = Color.BLACK
@@ -29,14 +29,10 @@ class TicTacToeView(context: Context?, attrs: AttributeSet?) : View(context, att
         super.onDraw(canvas)
 
         canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paintBackground)
-        
-        //canvas?.drawLine(0f, 0f, width.toFloat(), height.toFloat(), paintLine)
 
-        for (circle in circles) {
-            canvas?.drawCircle(circle.x, circle.y, 50f, paintLine)
-        }
-        
         drawGameArea(canvas)
+
+        drawPlayers(canvas)
     }
 
     private fun drawGameArea(canvas: Canvas?) {
@@ -55,19 +51,63 @@ class TicTacToeView(context: Context?, attrs: AttributeSet?) : View(context, att
             paintLine)
     }
 
+    private fun drawPlayers(canvas: Canvas?) {
+        for (i in 0..2) {
+            for (j in 0..2) {
+                if (TicTacToeModel.getFieldContent(i, j) == TicTacToeModel.CIRCLE) {
+                    val centerX = (i * width / 3 + width / 6).toFloat()
+                    val centerY = (j * height / 3 + height / 6).toFloat()
+                    val radius = height / 6 - 2
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+                    canvas?.drawCircle(centerX, centerY, radius.toFloat(), paintLine)
+                } else if (TicTacToeModel.getFieldContent(i, j) == TicTacToeModel.CROSS) {
+                    canvas?.drawLine((i * width / 3).toFloat(), (j * height / 3).toFloat(),
+                        ((i + 1) * width / 3).toFloat(),
+                        ((j + 1) * height / 3).toFloat(), paintLine)
 
-        circles.add(PointF(event!!.x, event!!.y))
+                    canvas?.drawLine(((i + 1) * width / 3).toFloat(), (j * height / 3).toFloat(),
+                        (i * width / 3).toFloat(), ((j + 1) * height / 3).toFloat(), paintLine)
+                }
+            }
+        }
+    }
 
-        // this will redraw the TicTacToeView
-        invalidate()
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val tX = event.x.toInt() / (width / 3)
+            val tY = event.y.toInt() / (height / 3)
+
+            if (TicTacToeModel.getFieldContent(tX, tY) == TicTacToeModel.EMPTY) {
+                TicTacToeModel.setFieldContent(tX, tY, TicTacToeModel.getNextPlayer())
+
+                TicTacToeModel.changeNextPlayer()
+
+                var nextPlayerText = "The next player is O"
+                if (TicTacToeModel.getNextPlayer() == TicTacToeModel.CROSS) {
+                    nextPlayerText = "The next player is X"
+                }
+                (context as MainActivity).setMessage(nextPlayerText)
+
+
+
+                // this will redraw the TicTacToeView
+                invalidate()
+            }
+        }
 
         return true
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val w = View.MeasureSpec.getSize(widthMeasureSpec)
+        val h = View.MeasureSpec.getSize(heightMeasureSpec)
+        val d = if (w == 0) h else if (h == 0) w else if (w < h) w else h
+        setMeasuredDimension(d, d)
+    }
+
     fun resetGame(){
-        circles.clear()
+        TicTacToeModel.resetModel()
         invalidate()
     }
 

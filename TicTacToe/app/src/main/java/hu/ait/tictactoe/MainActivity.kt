@@ -18,4 +18,8 @@ class MainActivity : AppCompatActivity() {
             binding.ticTacToe.resetGame()
         }
     }
+
+    public fun setMessage(msg: String) {
+        binding.tvData.text = msg
+    }
 }
