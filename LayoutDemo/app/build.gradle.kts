@@ -4,21 +4,17 @@ plugins {
 }
 
 android {
-    namespace = "hu.ait.tictactoe"
+    namespace = "hu.bme.layoutdemo"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "hu.ait.tictactoe"
+        applicationId = "hu.bme.layoutdemo"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildFeatures {
-        viewBinding = true
     }
 
     buildTypes {
@@ -48,6 +44,4 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }

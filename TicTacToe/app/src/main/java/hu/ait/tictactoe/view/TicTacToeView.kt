@@ -1,6 +1,8 @@
 package hu.ait.tictactoe.view
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -9,12 +11,17 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import hu.ait.tictactoe.MainActivity
+import hu.ait.tictactoe.R
 import hu.ait.tictactoe.model.TicTacToeModel
 
 class TicTacToeView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     private val paintBackground = Paint()
     private val paintLine = Paint()
+
+    private val paintText = Paint()
+
+    private var bitmapImg = BitmapFactory.decodeResource(resources, R.drawable.grass)
 
     init {
         paintBackground.color = Color.BLACK
@@ -23,12 +30,27 @@ class TicTacToeView(context: Context?, attrs: AttributeSet?) : View(context, att
         paintLine.color = Color.WHITE
         paintLine.style = Paint.Style.STROKE
         paintLine.strokeWidth = 5f
+
+        paintText.color = Color.GREEN
+        paintText.textSize = 100f
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+
+        paintText.textSize = h / 3f
+
+        bitmapImg = Bitmap.createScaledBitmap(bitmapImg, w/3, h/3, false)
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
         canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paintBackground)
+
+        canvas?.drawBitmap(bitmapImg, height/3f, width/3f, null)
+
+        canvas?.drawText("4", 0f, height/3f, paintText)
 
         drawGameArea(canvas)
 
@@ -77,6 +99,13 @@ class TicTacToeView(context: Context?, attrs: AttributeSet?) : View(context, att
         if (event.action == MotionEvent.ACTION_DOWN) {
             val tX = event.x.toInt() / (width / 3)
             val tY = event.y.toInt() / (height / 3)
+
+            if ((context as MainActivity).isFlagModeOn()) {
+                //
+            } else {
+                //
+            }
+
 
             if (TicTacToeModel.getFieldContent(tX, tY) == TicTacToeModel.EMPTY) {
                 TicTacToeModel.setFieldContent(tX, tY, TicTacToeModel.getNextPlayer())

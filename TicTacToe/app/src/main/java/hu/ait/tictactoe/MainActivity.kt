@@ -22,4 +22,8 @@ class MainActivity : AppCompatActivity() {
     public fun setMessage(msg: String) {
         binding.tvData.text = msg
     }
+
+    fun isFlagModeOn() : Boolean {
+        return binding.cbFlagMode.isChecked
+    }
 }
