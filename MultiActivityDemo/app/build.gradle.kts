@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "hu.ait.tictactoe"
+    namespace = "hu.bme.aut.multiactivitydemo"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "hu.ait.tictactoe"
+        applicationId = "hu.bme.aut.multiactivitydemo"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -48,8 +48,4 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
-
-    implementation("com.otaliastudios:zoomlayout:1.9.0")
 }
