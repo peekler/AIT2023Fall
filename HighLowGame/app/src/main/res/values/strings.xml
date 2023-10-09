@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HighLowGame</string>
+    <string name="text_hint_guess">Enter your guess here</string>
+    <string name="text_goodluck">Good luck</string>
 </resources>

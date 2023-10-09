@@ -8,13 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun SideEffectScreen() {
-    var counter = remember { mutableStateOf(0) }
+    var counter by remember { mutableStateOf(0) }
+
     val context = LocalContext.current
 
     /*SideEffect {
@@ -22,7 +25,7 @@ fun SideEffectScreen() {
             "SideEffect - recompose", Toast.LENGTH_SHORT).show()
     }*/
 
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = counter) {
         Toast.makeText(context,
             "LAUNCH", Toast.LENGTH_SHORT).show()
     }
@@ -36,12 +39,14 @@ fun SideEffectScreen() {
     }
 
     Column {
-        Text(text = "${counter.value}")
+        Text(text = "${counter}")
         Button(onClick = {
-            counter.value++
+            counter++
         }) {
             Text(text = "Increase counter")
         }
     }
 
 }
+
+
