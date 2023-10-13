@@ -1,6 +1,5 @@
-package hu.bme.aut.highlowgame.ui.screen
+package hu.bme.aut.highlowgame.ui.screen.gamescreen
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,29 +14,23 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hu.bme.aut.highlowgame.R
-import kotlin.random.Random
 import androidx.lifecycle.viewmodel.compose.*
+import hu.bme.aut.highlowgame.ui.view.SimpleAlertDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,6 +51,9 @@ fun GameScreen(
     }
     var errorText by rememberSaveable {
         mutableStateOf("")
+    }
+    var showWinDialog by rememberSaveable {
+        mutableStateOf(false)
     }
 
 
@@ -107,12 +103,15 @@ fun GameScreen(
                     if (myNum == viewModel.randomNum) {
                         // WIN
                         restultText = "You have won!"
+                        showWinDialog = true
                     } else if (myNum < viewModel.randomNum) {
                         //the num is high..
                         restultText = "The number is higher!"
+                        viewModel.incCounter()
                     } else if (myNum > viewModel.randomNum) {
                         //the num is lower..
                         restultText = "The number is lower!"
+                        viewModel.incCounter()
                     }
 
                     inputErrorState = false
@@ -129,20 +128,25 @@ fun GameScreen(
             Button(onClick = {
                 //randomNum = Random(System.currentTimeMillis()).nextInt(3)
                 viewModel.generateNewNum()
+                restultText = "Good luck!"
             }) {
                 Text(text = "Restart")
             }
         }
 
-
-
         Text(
-            text = restultText,
+            text = "$restultText, counter: ${viewModel.counter}",
             fontSize = 28.sp,
             color = Color.Blue,
             fontWeight = FontWeight.Bold,
             fontStyle = FontStyle.Italic
         )
+
+        if (showWinDialog) {
+            SimpleAlertDialog(title = "Congratulains!", body = "You have won!",
+                onDismiss = {showWinDialog = false},
+                onConfirm = {showWinDialog = false})
+        }
 
         /*Text(
             text = restultText,
