@@ -1,6 +1,8 @@
 package hu.bme.aut.todoapp.screen
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -213,7 +215,13 @@ fun TodoCard(
         }
 
         Column(
-            modifier = Modifier.padding(20.dp).animateContentSize()
+            modifier = Modifier.padding(20.dp).animateContentSize(
+                animationSpec = spring(
+                    dampingRatio =
+                    Spring.DampingRatioHighBouncy,
+                    stiffness = Spring.StiffnessMedium
+                )
+            )
         ) {
             Row(
                 modifier = Modifier
