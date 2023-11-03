@@ -1,4 +1,4 @@
-package hu.bme.aut.graderoomdemo
+package hu.bme.aut.studentgraderoomdemo
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,15 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
-import hu.bme.aut.graderoomdemo.ui.screen.GradeScreen
-import hu.bme.aut.graderoomdemo.ui.theme.GradeRoomDemoTheme
+import hu.bme.aut.studentgraderoomdemo.ui.screen.GradeScreen
+import hu.bme.aut.studentgraderoomdemo.ui.theme.StudentGradeRoomDemoTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GradeRoomDemoTheme {
+            StudentGradeRoomDemoTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),

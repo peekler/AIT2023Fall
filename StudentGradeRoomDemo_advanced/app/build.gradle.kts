@@ -1,19 +1,17 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-
-    id("com.google.devtools.ksp")
-
     id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "hu.bme.aut.graderoomdemo"
+    namespace = "hu.bme.aut.studentgraderoomdemo"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "hu.bme.aut.graderoomdemo"
+        applicationId = "hu.bme.aut.studentgraderoomdemo"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -34,7 +32,6 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -42,7 +39,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
     buildFeatures {
         compose = true
     }
@@ -75,15 +71,14 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     val room_version = "2.5.2"
+
     implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
     // To use Kotlin Symbol Processing (KSP)
     ksp("androidx.room:room-compiler:$room_version")
+
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
-
-    val nav_version = "2.5.3"
-    implementation("androidx.navigation:navigation-runtime-ktx:$nav_version")
-    implementation("androidx.navigation:navigation-compose:$nav_version")
 
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-compiler:2.44")

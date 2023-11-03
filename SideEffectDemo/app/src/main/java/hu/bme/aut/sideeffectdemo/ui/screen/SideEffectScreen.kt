@@ -25,7 +25,7 @@ fun SideEffectScreen() {
             "SideEffect - recompose", Toast.LENGTH_SHORT).show()
     }*/
 
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = counter) {
         Toast.makeText(context,
             "LAUNCH", Toast.LENGTH_SHORT).show()
     }
