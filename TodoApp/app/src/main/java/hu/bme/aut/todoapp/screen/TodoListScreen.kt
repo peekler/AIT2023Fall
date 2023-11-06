@@ -42,8 +42,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,8 +54,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import hu.bme.aut.todoapp.data.TodoItem
 import hu.bme.aut.todoapp.data.TodoPriority
+import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
 
@@ -61,11 +65,19 @@ import java.util.UUID
 @Composable
 fun TodoListScreen(
     modifier: Modifier = Modifier,
-    todoViewModel: TodoViewModel = viewModel(),
+    todoViewModel: TodoViewModel = hiltViewModel(),
     onNavigateToSummary: (Int, Int) -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
+    val todoList by
+    todoViewModel.getAllToDoList().collectAsState(emptyList())
+
     var showAddTodoDialog by rememberSaveable {
         mutableStateOf(false)
+    }
+    var todoToEdit: TodoItem? by rememberSaveable {
+        mutableStateOf(null)
     }
 
     Column {
@@ -84,14 +96,19 @@ fun TodoListScreen(
                     Icon(Icons.Filled.Delete, null)
                 }
                 IconButton(onClick = {
-                    onNavigateToSummary(
-                        todoViewModel.getAllTodoNum(),
-                        todoViewModel.getImportantTodoNum()
-                    )
+                    coroutineScope.launch {
+                        val allTodos = todoViewModel.getAllTodoNum()
+                        val importantTodos = todoViewModel.getImportantTodoNum()
+                        onNavigateToSummary(
+                            allTodos,
+                            importantTodos
+                        )
+                    }
                 }) {
                     Icon(Icons.Filled.Info, null)
                 }
                 IconButton(onClick = {
+                    todoToEdit = null
                     showAddTodoDialog = true
                 }) {
                     Icon(Icons.Filled.AddCircle, null)
@@ -102,22 +119,24 @@ fun TodoListScreen(
 
             if (showAddTodoDialog) {
                 AddNewTodoForm(todoViewModel,
-                    { showAddTodoDialog = false }
+                    { showAddTodoDialog = false },
+                    todoToEdit
                 )
             }
 
-            if (todoViewModel.getAllToDoList().isEmpty())
+            if (todoList.isEmpty())
                 Text(text = "No items")
             else {
                 LazyColumn(modifier = Modifier.fillMaxHeight()) {
-                    items(todoViewModel.getAllToDoList()) {
+                    items(todoList) {
                         TodoCard(todoItem = it,
                             onRemoveItem = { todoViewModel.removeTodoItem(it) },
                             onTodoCheckChange = { checkState ->
                                 todoViewModel.changeTodoState(it, checkState)
                             },
                             onEditItem = { editedTodoItem ->
-                                todoViewModel.editTodoItem(it, editedTodoItem)
+                                todoToEdit = editedTodoItem
+                                showAddTodoDialog = true
                             }
                         )
                     }
@@ -132,22 +151,31 @@ fun TodoListScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun AddNewTodoForm(
     todoViewModel: TodoViewModel,
-    onDialogDismiss: () -> Unit = {}
+    onDialogDismiss: () -> Unit = {},
+    todoToEdit: TodoItem? = null
 ) {
     Dialog(
         onDismissRequest = onDialogDismiss
     ) {
         var todoTitle by rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(todoToEdit?.title ?: "")
         }
         var todoImportant by rememberSaveable {
-            mutableStateOf(false)
+            mutableStateOf(
+                if (todoToEdit != null) {
+                    todoToEdit.priority == TodoPriority.HIGH
+                } else {
+                    false
+                }
+            )
         }
 
         Column(
-            Modifier.background(
-                color = MaterialTheme.colorScheme.secondaryContainer,
-                shape = MaterialTheme.shapes.medium)
+            Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    shape = MaterialTheme.shapes.medium
+                )
                 .padding(10.dp)
         ) {
 
@@ -171,16 +199,25 @@ private fun AddNewTodoForm(
 
             Row {
                 Button(onClick = {
-                    todoViewModel.addTodoList(
-                        TodoItem(
-                            UUID.randomUUID().toString(),
-                            todoTitle,
-                            "Desc1",
-                            Date(System.currentTimeMillis()).toString(),
-                            if (todoImportant) TodoPriority.HIGH else TodoPriority.NORMAL,
-                            false
+                    if (todoToEdit == null) {
+                        todoViewModel.addTodoList(
+                            TodoItem(
+                                0,
+                                todoTitle,
+                                "Desc1",
+                                Date(System.currentTimeMillis()).toString(),
+                                if (todoImportant) TodoPriority.HIGH else TodoPriority.NORMAL,
+                                false
+                            )
                         )
-                    )
+                    } else {
+                        var todoEdited = todoToEdit.copy(
+                            title = todoTitle,
+                            priority = if (todoImportant)
+                                TodoPriority.HIGH else TodoPriority.NORMAL,
+                        )
+                        todoViewModel.editTodoItem(todoEdited)
+                    }
 
                     onDialogDismiss()
                     //todoTitle = ""
@@ -215,13 +252,11 @@ fun TodoCard(
         }
 
         Column(
-            modifier = Modifier.padding(20.dp).animateContentSize(
-                animationSpec = spring(
-                    dampingRatio =
-                    Spring.DampingRatioHighBouncy,
-                    stiffness = Spring.StiffnessMedium
+            modifier = Modifier
+                .padding(20.dp)
+                .animateContentSize(
+                    animationSpec = spring()
                 )
-            )
         ) {
             Row(
                 modifier = Modifier
