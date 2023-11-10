@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "739117713113",
+    "project_id": "aitforum2023fall",
+    "storage_bucket": "aitforum2023fall.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739117713113:android:afcfee10646e2dc84160c8",
+        "android_client_info": {
+          "package_name": "hu.bme.ait.aitforum"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQt57maCzqPvk2FPXSSQRgdFG1jLnq09k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

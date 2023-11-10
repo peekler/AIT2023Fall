@@ -1,5 +1,6 @@
 package hu.bme.aut.todoapp.screen
 
+import android.os.Bundle
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -79,6 +80,7 @@ fun TodoListScreen(
     var todoToEdit: TodoItem? by rememberSaveable {
         mutableStateOf(null)
     }
+
 
     Column {
 
