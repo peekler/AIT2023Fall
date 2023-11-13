@@ -4,9 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 
 class LoginScreenViewModel : ViewModel() {
@@ -34,18 +36,32 @@ class LoginScreenViewModel : ViewModel() {
         }
     }
 
-    fun loginUser(email: String, password: String) {
+    /*fun loginUser(email: String, password: String) {
         loginUiState = LoginUiState.Loading
         try {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener{
                     loginUiState = LoginUiState.LoginSuccess
+
                 }
                 .addOnFailureListener{
                     loginUiState = LoginUiState.Error(it.message)
                 }
         } catch (e: Exception) {
             loginUiState = LoginUiState.Error(e.message)
+        }
+    }*/
+
+    suspend fun loginUser(email: String, password: String) : AuthResult? {
+        loginUiState = LoginUiState.Loading
+
+        return try {
+            val result = auth.signInWithEmailAndPassword(email, password).await()
+            loginUiState = LoginUiState.LoginSuccess
+            result
+        } catch (e: java.lang.Exception) {
+            loginUiState = LoginUiState.Error(e.message)
+            null
         }
     }
 

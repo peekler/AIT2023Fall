@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "hu.bme.ait.aitforum"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -72,6 +72,5 @@ dependencies {
     val nav_version = "2.5.3"
     implementation("androidx.navigation:navigation-runtime-ktx:$nav_version")
     implementation("androidx.navigation:navigation-compose:$nav_version")
-
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
 }
