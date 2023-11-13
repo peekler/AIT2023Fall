@@ -18,17 +18,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.P)
 @Composable
-fun WritePostScreen() {
+fun WritePostScreen(
+    writePostScreenViewModel: WritePostScreenViewModel = viewModel()
+) {
     var postTitle by remember { mutableStateOf("") }
     var postBody by remember { mutableStateOf("") }
 
     val context = LocalContext.current
-
 
     Column(
         modifier = Modifier.padding(20.dp)
@@ -49,11 +51,20 @@ fun WritePostScreen() {
         )
 
         Button(onClick = {
-
+            writePostScreenViewModel.uploadPost(postTitle, postBody)
         }) {
             Text(text = "Upload")
         }
 
-        CircularProgressIndicator()
+        when (writePostScreenViewModel.writePostUiState) {
+            is WritePostUiState.LoadingPostUpload -> CircularProgressIndicator()
+            is WritePostUiState.PostUploadSuccess -> {
+                Text(text = "Post uploaded.")
+            }
+            is WritePostUiState.ErrorDuringPostUpload ->
+                Text(text =
+                "${(writePostScreenViewModel.writePostUiState as WritePostUiState.ErrorDuringPostUpload).error}")
+            else -> {}
+        }
     }
 }
