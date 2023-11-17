@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.bme.ait.aitforum.data.Post
 import androidx.compose.foundation.lazy.items
+import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -144,6 +146,15 @@ fun PostCard(
                     }
                 }
             }
+
+            if (post.imgUrl != "") {
+                AsyncImage(
+                    model = post.imgUrl,
+                    modifier = Modifier.size(100.dp, 100.dp),
+                    contentDescription = "selected image"
+                )
+            }
+
         }
     }
 }
