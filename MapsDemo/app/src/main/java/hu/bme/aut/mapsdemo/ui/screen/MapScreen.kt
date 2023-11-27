@@ -1,7 +1,10 @@
 package hu.bme.aut.mapsdemo.ui.screen
 
 import android.Manifest
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
+import android.os.Build
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.waterfallPadding
@@ -42,6 +45,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.Polyline
 import hu.bme.aut.mapsdemo.R
 import kotlinx.coroutines.launch
+import java.util.Locale
 import java.util.Random
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -77,6 +81,9 @@ fun MapScreen(
                 )*/
             )
         )
+    }
+    var geocodeText by remember {
+        mutableStateOf("")
     }
 
     Column {
@@ -123,6 +130,7 @@ fun MapScreen(
                 mapType = if (isSatellite) MapType.SATELLITE else MapType.NORMAL
             )
         })
+        Text(text = "$geocodeText")
 
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
@@ -163,7 +171,35 @@ fun MapScreen(
             for (position in mapViewModel.getMarkersList()) {
                 Marker(
                     state = MarkerState(position = position),
-                    title = "Title"
+                    title = "Title",
+                    onClick = {
+                        val geocoder = Geocoder(context, Locale.getDefault())
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            geocoder.getFromLocation(
+                                it.position.latitude,
+                                it.position.longitude,
+                                3,
+                                object : Geocoder.GeocodeListener {
+                                    override fun onGeocode(addrs: MutableList<Address>) {
+                                        val addr =
+                                            "${addrs[0].getAddressLine(0)}, ${
+                                                addrs[0].getAddressLine(
+                                                    1
+                                                )
+                                            }, ${addrs[0].getAddressLine(2)}"
+
+                                        geocodeText = addr
+                                    }
+
+                                    override fun onError(errorMessage: String?) {
+                                        geocodeText = errorMessage!!
+                                        super.onError(errorMessage)
+
+                                    }
+                                })
+                        }
+                        true
+                    }
                 )
             }
 
