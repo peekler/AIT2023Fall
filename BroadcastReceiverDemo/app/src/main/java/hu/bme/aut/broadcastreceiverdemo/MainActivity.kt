@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        unregisterReceiver(
-                airPlaneReceiver
-        )
+        //unregisterReceiver(
+        //        airPlaneReceiver
+        //)
 
         super.onDestroy()
     }

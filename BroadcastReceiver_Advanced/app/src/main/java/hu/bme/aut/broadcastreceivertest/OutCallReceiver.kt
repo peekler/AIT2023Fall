@@ -11,10 +11,10 @@ class OutCallReceiver : BroadcastReceiver() {
         val outNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER)
         Toast.makeText(context, outNumber, Toast.LENGTH_LONG).show()
 
-        //this.resultData = "1001"
+        this.resultData = "10016667"
 
-        var intent = Intent(context, MainActivity::class.java)
+        /*var intent = Intent(context, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        context.startActivity(intent)
+        context.startActivity(intent)*/
     }
 }
