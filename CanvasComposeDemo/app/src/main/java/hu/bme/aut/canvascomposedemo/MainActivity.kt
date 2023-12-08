@@ -52,9 +52,9 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //MyCanvas()
-                    CanvasDemoScreen()
+                    //CanvasDemoScreen()
                     //ComposeDrawBehind()
-                    //AnimatedCanvasScreen()
+                    AnimatedCanvasScreen()
                 }
             }
         }

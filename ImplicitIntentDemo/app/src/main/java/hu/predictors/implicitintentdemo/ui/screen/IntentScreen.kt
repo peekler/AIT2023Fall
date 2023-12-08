@@ -19,8 +19,8 @@ fun IntentScreen() {
             //intentSearch(context)
             //intentCall(context)
             //intentSend(context)
-            //intentWaze(context)
-            intentStreetMaps(context)
+            intentWaze(context)
+            //intentStreetMaps(context)
         }) {
             Text(text = "Intent start")
         }

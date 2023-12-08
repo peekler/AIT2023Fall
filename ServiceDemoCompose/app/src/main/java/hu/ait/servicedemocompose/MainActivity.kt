@@ -21,8 +21,10 @@ import hu.ait.servicedemocompose.ui.theme.ServiceDemoComposeTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val intentMyTimeService = Intent(this,
             MyTimeService::class.java)
+
         setContent {
             ServiceDemoComposeTheme {
                 // A surface container using the 'background' color from the theme
@@ -66,6 +68,7 @@ fun ServiceScreen(intentMyTimeService: Intent) {
         if (permissionGranted) {
             Button(onClick = {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
                     context.startForegroundService(
                         intentMyTimeService
                     )

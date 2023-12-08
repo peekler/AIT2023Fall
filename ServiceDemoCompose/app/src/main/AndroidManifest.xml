@@ -25,7 +25,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".MyTimeService"/>
+        <service
+            android:name=".MyTimeService"/>
+
     </application>
 
 </manifest>
